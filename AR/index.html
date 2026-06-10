@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+  <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <a-scene mindar-image="imageTargetSrc: assets/targets.mind;" vr-mode-ui="enabled:false"
+    device-orientation-permission-ui="enabled:false">
+
+    <a-assets>
+
+      <video id="birthdayVideo" src="videos/demo1.mp4" preload="auto" muted playsinline webkit-playsinline>
+
+      </video>
+
+      <img id="heart" src="images/heart.png">
+      <img id="poster" src="images/poster.png">
+
+      </img>
+
+    </a-assets>
+
+    <a-camera></a-camera>
+
+    <a-entity id="target" mindar-image-target="targetIndex:0">
+      <a-text id="loveQuote" value="❤️ Some smiles become memories.
+Some memories become happiness.
+Your smile is my Happiness....❤️
+Happy Birthday." align="center" color="#FFD700" position="0 -1.8 0" width="3" visible="false">
+
+      </a-text>
+      <a-image id="birthdayPoster" src="#poster" position="0 0 0.01" width="1" height="1.5" visible="false" animation="
+property: scale;
+from:0 0 0;
+to:1 1 1;
+dur:1500">
+
+      </a-image>
+
+      <!-- VIDEO -->
+
+      <a-video id="videoPlane" src="#birthdayVideo" visible="false" width="1" height="1.7" position="0 0 0" opacity="1">
+
+      </a-video>
+
+      <!-- BIRTHDAY TEXT -->
+
+      <a-text id="birthdayText" value="Happy Birthday ❤️" align="center" color="red" position="0 1 0"
+        scale="0.7 0.7 0.7" visible="false" animation="
+property: scale;
+from:0 0 0;
+to:0.7 0.7 0.7;
+dur:1500">
+
+      </a-text>
+
+      <!-- TAP -->
+
+      <a-text id="tapText" value="Tap Anywhere ❤️" align="center" color="yellow" position="0 -1.2 0" scale="0.5 0.5 0.5"
+        visible="false">
+
+      </a-text>
+
+      <!-- HEARTS -->
+
+      <a-image src="#heart" position="-0.8 0.8 0" width="0.2" height="0.2" animation="
+property: position;
+dir: alternate;
+dur: 1000;
+loop: true;
+to: -0.8 1 0">
+
+      </a-image>
+
+      <a-image src="#heart" position="0.8 0.8 0" width="0.2" height="0.2" animation="
+property: position;
+dir: alternate;
+dur: 1200;
+loop: true;
+to: -0.8 1 0">
+
+      </a-image>
+
+      <a-image src="#heart" position="-0.8 -0.8 0" width="0.2" height="0.2" animation="
+property: position;
+dir: alternate;
+dur: 1500;
+loop: true;
+to: -0.8 1 0">
+
+      </a-image>
+
+      <a-image src="#heart" position="0.8 -0.8 0" width="0.2" height="0.2" animation="
+property: position;
+dir: alternate;
+dur: 1700;
+loop: true;
+to: -0.8 1 0">
+
+      </a-image>
+
+      <a-image src="#heart" position="0 1 0" width="0.2" height="0.2" animation="
+property: position;
+dir: alternate;
+dur: 2000;
+loop: true;
+to: -0.8 1 0">
+
+      </a-image>
+      <a-text id="futureDoctor" value="👩‍⚕️\n\nHappy Birthday\n\nFuture Doctor\n\n✨" align="center" color="#00FF66"
+        position="0 0 0" width="3" visible="false">
+      </a-text>
+      <a-text id="finalLove" value="❤️\n\nKeep Smiling.\n\nKeep Dreaming.\n\nKeep Shining.\n\n❤️" align="center"
+        color="#FFD700" position="0 -1.5 0" width="3" visible="false">
+
+      </a-text>
+      <a-text id="replay" value="🔄\n\nReplay Surprise\n\n❤️" align="center" color="yellow" position="0 -2.3 0"
+        width="2" visible="false">
+
+      </a-text>
+    </a-entity>
+
+  </a-scene>
+
+  <script>
+
+    const video = document.querySelector("#birthdayVideo");
+
+    const target = document.querySelector("#target");
+
+    const birthdayText = document.querySelector("#birthdayText");
+
+    const tapText = document.querySelector("#tapText");
+    const loveQuote = document.querySelector("#loveQuote");
+    const birthdayPoster = document.querySelector("#birthdayPoster");
+    const videoPlane = document.querySelector("#videoPlane");
+    const futureDoctor = document.querySelector("#futureDoctor");
+    const finalLove = document.querySelector("#finalLove");
+    const replay = document.querySelector("#replay");
+
+    target.addEventListener("targetFound", () => {
+
+      loveQuote.setAttribute("visible", true);
+
+      birthdayText.setAttribute("visible", true);
+      birthdayPoster.setAttribute("visible", true);
+
+      tapText.setAttribute("visible", true);
+
+      birthdayPoster.setAttribute("visible", true);
+
+      videoPlane.setAttribute("visible", false);
+
+    });
+
+    target.addEventListener("targetLost", () => {
+      loveQuote.setAttribute("visible", false);
+
+      birthdayText.setAttribute("visible", false);
+      birthdayPoster.setAttribute("visible", false);
+      videoPlane.setAttribute("visible", false);
+
+      tapText.setAttribute("visible", false);
+
+      video.pause();
+
+    });
+
+    document.body.addEventListener("click", () => {
+
+      birthdayPoster.setAttribute("visible", false);
+      videoPlane.setAttribute("visible", true);
+      video.muted = false;
+      video.play();
+      tapText.setAttribute("visible", false);
+
+    });
+    video.addEventListener("ended", () => {
+      futureDoctor.setAttribute("visible", true);
+      finalLove.setAttribute("visible", true);
+      replay.setAttribute("visible", true);
+    });
+    replay.addEventListener("click", () => {
+      futureDoctor.setAttribute("visible", false);
+      finalLove.setAttribute("visible", false);
+      replay.setAttribute("visible", false);
+      video.currentTime = 0;
+      video.play();
+    });
+    futureDoctor.setAttribute("visible", false);
+    finalLove.setAttribute("visible", false);
+    replay.setAttribute("visible", false);
+  </script>
+
+</body>
+
+</html>
